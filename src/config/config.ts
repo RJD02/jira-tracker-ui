@@ -2,7 +2,7 @@ import { JiraCredential } from "../shared/types/types";
 import * as starConfig from "../config/star/star-config";
 import * as salamConfig from "../config/salam/salam-config";
 
-import { TeamMember } from "@/shared/team";
+import { TeamMember } from "../shared/types/team";
 
 interface Config {
     baseurl: string;

@@ -8,9 +8,9 @@ interface HeaderProps {
     onClick: (project: PROJECT) => void;
 }
 export function Header(props: HeaderProps) {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, _setIsMenuOpen] = useState(false);
 
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    // const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     const links = [
         { href: "/salam", label: "Salam" },
