@@ -14,7 +14,7 @@ export const useFetchJiraDetails = (_event: any, project: PROJECT) => {
 
             let issuesToTrack: JiraResponse | null = null;
             try {
-                const response = await fetch(`http://localhost:5000/${project}`)
+                const response = await fetch(`https://jira-tracker-server.onrender.com/${project}`)
                 if (!response.ok) {
                     setError(response.statusText)
                 }
