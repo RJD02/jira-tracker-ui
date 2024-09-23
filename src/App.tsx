@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import HomePage from "./Home";
 import { isAfterLastNBusinessDays } from "./utils/utils";
 import { getParticipantActivity } from "./utils/activity-helper";
@@ -8,9 +7,7 @@ import {
     WorkItemWithActivities,
 } from "./components/workitem/WorkItem.type";
 import { getConfig, PROJECT } from "./config/config";
-import { Header } from "./components/header";
 import { useFetchJiraDetails } from "./api/api";
-import { createRoot } from "react-dom/client";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 interface AppProps {
