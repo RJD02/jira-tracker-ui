@@ -11,7 +11,7 @@ export const RootApp = () => {
   return (
     <React.StrictMode>
       <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg  overflow-hidden">
-        <Header onClick={setProject} />
+        <Header onClick={setProject} activeProject={project} />
         <ProjectApp project={project} />
       </div>
     </React.StrictMode>

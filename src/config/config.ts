@@ -1,42 +1,47 @@
 import { JiraCredential } from "../shared/types/types";
 import * as starConfig from "../config/star/star-config";
 import * as salamConfig from "../config/salam/salam-config";
-import * as customerSuccessConfig from '../config/customer-success/cs-config'
+import * as customerSuccessConfig from "../config/customer-success/cs-config";
 
 import { TeamMember } from "../shared/types/team";
 
 interface Config {
-    baseurl: string;
-    board?: string;
-    credential: JiraCredential;
-    team: TeamMember[];
+  baseurl: string;
+  board?: string;
+  credential: JiraCredential;
+  team: TeamMember[];
 }
 export type PROJECT = "STAR" | "SALAM" | "CUSTOMER_SUCCESS";
 
+export const CONFIGURED_PROJECTS: { id: PROJECT; label: string }[] = [
+  { id: "SALAM", label: "Salam" },
+  { id: "STAR", label: "Star" },
+  { id: "CUSTOMER_SUCCESS", label: "Customer Success" },
+];
+
 export function getConfig(project: PROJECT): Config {
-    switch (project) {
-        case "STAR":
-            return {
-                baseurl: starConfig.BASE_URL,
-                board: starConfig.BOARD,
-                credential: starConfig.starCredentials,
-                team: starConfig.starTeam,
-            };
-        case "SALAM":
-            return {
-                baseurl: salamConfig.BASE_URL,
-                credential: salamConfig.salamCredentials,
-                team: salamConfig.salamTeam,
-            };
+  switch (project) {
+    case "STAR":
+      return {
+        baseurl: starConfig.BASE_URL,
+        board: starConfig.BOARD,
+        credential: starConfig.starCredentials,
+        team: starConfig.starTeam,
+      };
+    case "SALAM":
+      return {
+        baseurl: salamConfig.BASE_URL,
+        credential: salamConfig.salamCredentials,
+        team: salamConfig.salamTeam,
+      };
 
-        case "CUSTOMER_SUCCESS":
-            return {
-                baseurl: customerSuccessConfig.BASE_URL,
-                credential: customerSuccessConfig.customerSuccessCredentials,
-                team: customerSuccessConfig.customerSuccessTeam
-            }
-    }
+    case "CUSTOMER_SUCCESS":
+      return {
+        baseurl: customerSuccessConfig.BASE_URL,
+        credential: customerSuccessConfig.customerSuccessCredentials,
+        team: customerSuccessConfig.customerSuccessTeam,
+      };
+  }
 
-    throw new Error("Invalid project");
+  throw new Error("Invalid project");
 }
-

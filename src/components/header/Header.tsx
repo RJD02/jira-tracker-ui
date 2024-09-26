@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { PROJECT } from "../../config/config";
+import { CONFIGURED_PROJECTS, PROJECT } from "../../config/config";
 
 interface HeaderProps {
   activeProject?: PROJECT;
@@ -10,12 +10,7 @@ export function Header(props: HeaderProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { activeProject = "STAR", onClick: setActiveProject } = props;
-
-  const links: { id: PROJECT; label: string }[] = [
-    { id: "SALAM", label: "Salam" },
-    { id: "STAR", label: "Star" },
-    { id: "CUSTOMER_SUCCESS", label: "Customer Success" },
-  ];
+  const links: { id: PROJECT; label: string }[] = CONFIGURED_PROJECTS;
 
   return (
     <header className="bg-background border-b border-border">
@@ -30,8 +25,10 @@ export function Header(props: HeaderProps) {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeProject === link.id
                     ? "bg-blue-100 text-blue-800"
+                    : index === 0
+                    ? "bg-teal-100 text-teal-600"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                } ${index === 0 ? "text-teal-600" : ""}`}
+                }`}
               >
                 {link.label}
               </button>

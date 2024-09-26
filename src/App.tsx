@@ -192,7 +192,11 @@ const ProjectApp: React.FC<AppProps> = ({ project = "STAR" }: AppProps) => {
   return (
     <div>
       {error == null ? <></> : <p>{error}</p>}
-      {loading ? <div>Loading...</div> : <HomePage members={finalItems} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <HomePage members={finalItems} project={project} />
+      )}
     </div>
   );
 };

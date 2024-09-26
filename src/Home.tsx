@@ -12,8 +12,10 @@ import {
 import { MemberWorkItem } from "./components/workitem/WorkItem.type";
 import { WorkItemComponent } from "./components/workitem/WorkItems";
 import { getLastNBusinessDays } from "./utils/utils";
+import { CONFIGURED_PROJECTS, PROJECT } from "./config/config";
 
 interface MemberListProps {
+  project: PROJECT;
   members: MemberWorkItem[];
 }
 interface Stats {
@@ -94,6 +96,9 @@ export default function MemberList(props: MemberListProps) {
     <div className="">
       <div className="p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <span className="text-amber-500 italic uppercase text-2xl font-bold mr-2">
+            {CONFIGURED_PROJECTS.find((p) => p.id === props.project)?.label}
+          </span>
           Team Overview
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
