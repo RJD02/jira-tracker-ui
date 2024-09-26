@@ -164,23 +164,6 @@ export default function MemberList(props: MemberListProps) {
   );
 }
 
-function MemberSummary({ member }: { member: MemberWithStats }) {
-  return (
-    <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">
-        {member.name}
-      </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-sm text-gray-600">
-        {Object.entries(member.stats).map(([key, value]) => (
-          <div key={key} className="capitalize">
-            <span className="font-medium text-gray-700">{key}:</span> {value}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function MemberComponent({ member }: { member: MemberWorkItem }) {
   const [expandedSections, setExpandedSections] = useState({
     workDone: true,
