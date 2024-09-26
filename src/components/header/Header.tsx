@@ -3,6 +3,7 @@ import { useState } from "react";
 import { User, Link } from "lucide-react";
 import { Button } from "../ui/Button";
 import { PROJECT } from "../../config/config";
+import { isValidProject } from "../../utils/utils";
 
 interface HeaderProps {
     onClick: (project: PROJECT) => void;
@@ -15,7 +16,20 @@ export function Header(props: HeaderProps) {
     const links = [
         { href: "/salam", label: "Salam" },
         { href: "/star", label: "Star" },
+        { href: '/customer_success', label: 'Customer_Success' }
     ];
+
+    const handleClick = (link: { href: string, label: string }) => {
+        console.log('Clicking')
+        const value = link.label.toUpperCase()
+        console.log(value)
+        if (isValidProject(value))
+            props.onClick(
+                value
+            )
+        else
+            props.onClick('STAR')
+    }
 
     return (
         <header className="bg-background border-b border-border">
@@ -36,9 +50,7 @@ export function Header(props: HeaderProps) {
                                     key={link.href}
                                     // href={link.href}
                                     onClick={() =>
-                                        props.onClick(
-                                            link.label.toLowerCase() == "star" ? "STAR" : "SALAM"
-                                        )
+                                        handleClick(link)
                                     }
                                     className="text-muted-foreground hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150"
                                 >
