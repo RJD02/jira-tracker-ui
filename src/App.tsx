@@ -5,38 +5,48 @@ import {
   MemberWorkItem,
   WorkItemWithActivities,
 } from "./components/workitem/WorkItem.type";
-import { getConfig, PROJECT } from "./config/config";
-import { useFetchJiraDetails } from "./api/api";
 import HomePage from "./Home";
+import { Issue, TeamMember } from "./__generated__/graphql";
+import { useJiraDetails } from "./hooks/jira-hook";
 
-interface AppProps {
-  project: PROJECT;
+export interface AppProps {
+  project: string;
 }
 
 const ProjectApp: React.FC<AppProps> = ({ project = "STAR" }: AppProps) => {
-  const {
-    data: jiraDetails,
-    loading,
-    error,
-  } = useFetchJiraDetails("fetch-jira-details", project);
-  if (loading) return <p>Loading</p>;
+  const { issues, members, projects, loading, error } = useJiraDetails(project);
+  if (loading && !issues) return <p>Loading</p>;
+  if (error) return <p>{error.message}</p>;
 
-  const config = getConfig(project);
+  const finalItems = mapWorkItems(issues as any, members);
+  return (
+    <HomePage
+      members={finalItems}
+      projectLabel={projects?.find((p) => p.id === project)!.label || project}
+    />
+  );
+};
+
+export default ProjectApp;
+
+function mapWorkItems(issues: Issue[], members: TeamMember[]) {
   const workItems: WorkItem[] =
-    jiraDetails?.issues
+    issues
       ?.map((issue) => {
         const workItem: WorkItem = {
           id: issue.id,
           key: issue.key,
+          createdAt: issue.fields.created,
+          duedate: issue.fields.duedate,
           storyKey:
             issue.fields.parent?.fields.issuetype.name.toLowerCase() === "story"
               ? issue.fields.parent.key
               : issue.key,
-          url: `${config.baseurl}/browse/${issue.key}`,
+          url: issue.url,
           lastUpdated: issue.fields.updated,
           title: issue.fields.summary,
           labels: issue.fields.labels,
-          description: issue.fields.description,
+          description: issue.fields.description ?? "",
           priority: {
             id: issue.fields.priority.id,
             name: issue.fields.priority.name,
@@ -103,7 +113,7 @@ const ProjectApp: React.FC<AppProps> = ({ project = "STAR" }: AppProps) => {
         result[participantId] = {
           id: participantId,
           name:
-            config.team.find((m) => m.id === participantId)?.name ||
+            members.find((m) => m.id === participantId)?.name ||
             participant.author.displayName,
           avatar: "/placeholder.svg?height=40&width=40",
           role: participant.role,
@@ -183,22 +193,11 @@ const ProjectApp: React.FC<AppProps> = ({ project = "STAR" }: AppProps) => {
   }
 
   const position = (id: string) =>
-    config.team.findIndex((t) => t.id === id) > -1
-      ? config.team.findIndex((t) => t.id === id)
+    members.findIndex((t) => t.id === id) > -1
+      ? members.findIndex((t) => t.id === id)
       : 1000;
   const finalItems = Object.values(memberWorkItem).sort(
     (a, b) => position(a.id) - position(b.id)
   );
-  return (
-    <div>
-      {error == null ? <></> : <p>{error}</p>}
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <HomePage members={finalItems} project={project} />
-      )}
-    </div>
-  );
-};
-
-export default ProjectApp;
+  return finalItems;
+}

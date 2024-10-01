@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { CONFIGURED_PROJECTS, PROJECT } from "../../config/config";
+import { useProjects } from "@/hooks/project-hook";
 
 interface HeaderProps {
-  activeProject?: PROJECT;
-  onClick: (project: PROJECT) => void;
+  activeProject: string | null;
+  onClick: (project: string) => void;
 }
-export function Header(props: HeaderProps) {
+
+export function Header({
+  activeProject,
+  onClick: setActiveProject,
+}: HeaderProps) {
+  const { loading, projects } = useProjects();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { activeProject = "STAR", onClick: setActiveProject } = props;
-  const links: { id: PROJECT; label: string }[] = CONFIGURED_PROJECTS;
+  useEffect(() => {
+    if (!activeProject && !loading) {
+      if (projects && projects.length > 0) setActiveProject(projects[0].id);
+    }
+  }, [loading]);
+
+  const links = projects;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <header className="bg-background border-b border-border">

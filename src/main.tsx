@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { Header } from "./components/header";
-import ProjectApp from "./App";
-import { PROJECT } from "./config/config";
 import { createRoot } from "react-dom/client";
 import "./output.css";
+import { ProjectApp } from "./ProjectApp";
+import { client } from "./api/api";
+import { ApolloProvider } from "@apollo/client";
 
 export const RootApp = () => {
-  const [project, setProject] = useState<PROJECT>("STAR");
-
   return (
     <React.StrictMode>
-      <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg  overflow-hidden">
-        <Header onClick={setProject} activeProject={project} />
-        <ProjectApp project={project} />
-      </div>
+      <ApolloProvider client={client}>
+        <AppContainer />
+      </ApolloProvider>
     </React.StrictMode>
+  );
+};
+
+const AppContainer = () => {
+  const [project, setProject] = useState<string | null>(null);
+
+  return (
+    <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg overflow-hidden">
+      <Header onClick={setProject} activeProject={project} />
+      {project && <ProjectApp project={project} />}
+    </div>
   );
 };
 

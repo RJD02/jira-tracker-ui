@@ -18,5 +18,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/__generated__/**/*" // Add this line to exclude generated files
+  ]
 }

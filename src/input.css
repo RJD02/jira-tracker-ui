@@ -5,3 +5,26 @@
 .appearance-none p {
   margin: revert;
 }
+
+.appearance-none ul {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
+
+/* Ensure table borders are applied globally */
+.appearance-none table {
+  border-collapse: collapse; /* Ensures borders don't have gaps */
+  width: 100%; /* Optional: Ensures table takes full width */
+}
+
+.appearance-none table th,
+table td {
+  border: 1px solid black; /* Adds black border to both table header and cells */
+  padding: 8px; /* Adds padding for better readability */
+  text-align: left; /* Align text to the left */
+}
+
+.appearance-none table th {
+  background-color: #f2f2f2; /* Optional: Light gray background for headers */
+}

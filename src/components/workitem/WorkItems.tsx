@@ -11,10 +11,16 @@ import { StatusIcon, statusColors } from "./StatusIcon";
 import Timeline from "../ui/Event";
 import moment from "moment";
 import ReactMarkdown from "react-markdown";
+import { processMarkdownWithADF } from "../../utils/jira-adf-util";
+import remarkGfm from "remark-gfm";
+import rehype from "remark-rehype";
+import rehypeRaw from "rehype-raw";
+
 interface WorkItemComponentProps {
   item: WorkItem & Activities;
   className?: string;
 }
+
 export function WorkItemComponent({ item, className }: WorkItemComponentProps) {
   return (
     <AccordionItem
@@ -87,13 +93,43 @@ export function WorkItemComponent({ item, className }: WorkItemComponentProps) {
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="space-y-2 ml-4 mt-2 ">
+        <div className="space-y-2 ml-4 mt-2  px-4 py-2 ">
+          <div className="text-pretty text-gray-700 text-sm italic mb-2">
+            {"Created At"}
+            <span className="text-xs text-red-400 font-light ml-2">
+              {moment(item.createdAt).fromNow()},{" "}
+            </span>
+            <span className="text-xs font-thin">
+              {moment(item.createdAt).format("DD, MMM YY")}
+            </span>
+          </div>
+          <div className="text-pretty text-gray-700 text-sm italic mb-2">
+            {"Due Date"}
+            {item.duedate ? (
+              <>
+                <span className="text-xs text-red-400 font-light ml-2">
+                  {moment(item.duedate).fromNow()},{" "}
+                </span>
+                <span className="text-xs font-thin">
+                  {moment(item.duedate).calendar()}
+                </span>
+              </>
+            ) : (
+              ": NA"
+            )}
+          </div>
           <p
-            className="text-xs px-4 py-2 font-light text-gray-600 appearance-none"
+            className="text-xs font-light text-gray-600 appearance-none"
             title={item.description}
           >
             <div className="prose">
-              <ReactMarkdown>{item.description}</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehype, rehypeRaw]}
+              >
+                {/* {markdownContent} */}
+                {item.description && processMarkdownWithADF(item.description)}
+              </ReactMarkdown>
             </div>
           </p>
           <div className="flex items-center space-x-2">

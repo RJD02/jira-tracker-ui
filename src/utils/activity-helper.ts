@@ -18,67 +18,66 @@ import { getLastNBusinessDays } from "./utils";
  */
 
 export interface Activities {
-    author: User;
-    role: string[];
-    recentActivity: { content: string; type: string; detail?: any }[];
+  author: User;
+  role: string[];
+  recentActivity: { content: string; type: string; detail?: any }[];
 }
 
 export function getParticipantActivity(
-    workItem: WorkItem,
-    n = 1
+  workItem: WorkItem,
+  n = 1
 ): Activities[] {
-    const activities: Activities[] = [];
-    const lastNBusinessDate = getLastNBusinessDays(n);
+  const activities: Activities[] = [];
+  const lastNBusinessDate = getLastNBusinessDays(n);
 
-    // Add assignee
-    activities.push({
-        author: workItem.assignee,
-        role: ["owner"],
-        recentActivity: [],
-    });
+  // Add assignee
+  activities.push({
+    author: workItem.assignee,
+    role: ["owner"],
+    recentActivity: [],
+  });
 
-    // Add comment authors
-    workItem.comments
-        .filter((comment) => new Date(comment.createdAt) > lastNBusinessDate)
-        .forEach((comment) =>
-            activities.push({
-                author: comment.author,
-                role: ["comment"],
-                recentActivity: [{ content: comment.content, type: "comment" }],
-            })
-        );
+  // Add comment authors
+  workItem.comments
+    .filter((comment) => new Date(comment.createdAt) > lastNBusinessDate)
+    .forEach((comment) =>
+      activities.push({
+        author: comment.author,
+        role: ["comment"],
+        recentActivity: [{ content: comment.content, type: "comment" }],
+      })
+    );
 
-    // Add work log authors
-    workItem.hoursLogged
-        ?.filter((log) => new Date(log.createdAt) > lastNBusinessDate)
-        .forEach((log) =>
-            activities.push({
-                author: log.author,
-                role: ["worklog"],
-                recentActivity: [
-                    { content: log.timeSpent, type: "worklog", detail: log },
-                ],
-            })
-        );
-    //reduce the participants and merge the roles
-    return activities.reduce((acc, recentActivity) => {
-        const existingParticipantActivity = acc.find(
-            (p) => p.author.id === recentActivity.author.id
-        );
-        if (existingParticipantActivity) {
-            existingParticipantActivity.role = Array.from(
-                new Set([...existingParticipantActivity.role, ...recentActivity.role])
-            );
-            existingParticipantActivity.recentActivity = Array.from(
-                new Set([
-                    ...existingParticipantActivity.recentActivity,
-                    ...recentActivity.recentActivity,
-                ])
-            );
-        } else {
-            acc.push(recentActivity);
-        }
-        return acc;
-    }, [] as Activities[]);
+  // Add work log authors
+  workItem.hoursLogged
+    ?.filter((log) => new Date(log.createdAt) > lastNBusinessDate)
+    .forEach((log) =>
+      activities.push({
+        author: log.author,
+        role: ["worklog"],
+        recentActivity: [
+          { content: log.timeSpent, type: "worklog", detail: log },
+        ],
+      })
+    );
+  //reduce the participants and merge the roles
+  return activities.reduce((acc, recentActivity) => {
+    const existingParticipantActivity = acc.find(
+      (p) => p.author.id === recentActivity.author.id
+    );
+    if (existingParticipantActivity) {
+      existingParticipantActivity.role = Array.from(
+        new Set([...existingParticipantActivity.role, ...recentActivity.role])
+      );
+      existingParticipantActivity.recentActivity = Array.from(
+        new Set([
+          ...existingParticipantActivity.recentActivity,
+          ...recentActivity.recentActivity,
+        ])
+      );
+    } else {
+      acc.push(recentActivity);
+    }
+    return acc;
+  }, [] as Activities[]);
 }
-
