@@ -2,22 +2,36 @@ import React, { useState } from "react";
 import { Header } from "./components/header";
 import { PROJECT } from "./config/config";
 import { createRoot } from "react-dom/client";
+import LoginPage from "./components/Login/Login";
+import { PrivateRoute } from "./components/Protected/ProtectedRoute";
+import ProjectApp from "./App";
+import { AuthProvider } from "./contexts/AuthProvider";
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
 import "./output.css";
-import LoginPage from "./components/Login/Login";
-import { PrivateRoute } from "./components/Protected/ProtectedRoute";
-import ProjectApp from "./App";
-import { AuthProvider } from "./contexts/AuthProvider";
+import { ProjectApp } from "./ProjectApp";
+import { client } from "./api/api";
+import { ApolloProvider } from "@apollo/client";
 
 export const RootApp = () => {
-    const [project, setProject] = useState<PROJECT>("STAR");
-    const router = createBrowserRouter([
+  return (
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <AppContainer />
+      </ApolloProvider>
+    </React.StrictMode>
+  );
+};
+
+const AppContainer = () => {
+  const [project, setProject] = useState<string | null>(null);
+
+const router = createBrowserRouter([
         {
             path: "/",
-            element: <PrivateRoute component={ProjectApp} project={project} />,
+            element: project && <PrivateRoute component={ProjectApp} project={project} />,
         },
         {
             path: "/login",
@@ -28,15 +42,14 @@ export const RootApp = () => {
 
     // <ProjectApp project={project} />
     return (
-        <React.StrictMode>
             <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg  overflow-hidden">
                 <Header onClick={setProject} />
                 <AuthProvider>
                     <RouterProvider router={router} />
                 </AuthProvider>
             </div>
-        </React.StrictMode>
     );
+  
 };
 
 const container = document.getElementById("root");

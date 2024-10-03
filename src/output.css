@@ -645,10 +645,6 @@ video {
   margin-bottom: 1rem;
 }
 
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
 .ml-1 {
   margin-left: 0.25rem;
 }
@@ -683,6 +679,10 @@ video {
 
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.\!block {
+  display: block !important;
 }
 
 .block {
@@ -769,6 +769,10 @@ video {
   width: 100%;
 }
 
+.w-20 {
+  width: 5rem;
+}
+
 .max-w-full {
   max-width: 100%;
 }
@@ -804,8 +808,8 @@ video {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.grid-cols-10 {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -995,11 +999,6 @@ video {
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
-.bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
 .bg-gray-500 {
@@ -1218,6 +1217,10 @@ video {
   font-weight: 100;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -1329,6 +1332,11 @@ video {
   color: rgb(17 94 89 / var(--tw-text-opacity));
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .underline-offset-4 {
   text-underline-offset: 4px;
 }
@@ -1395,6 +1403,36 @@ video {
 
 .appearance-none p {
   margin: revert;
+}
+
+.appearance-none ul {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
+
+/* Ensure table borders are applied globally */
+
+.appearance-none table {
+  border-collapse: collapse;
+  /* Ensures borders don't have gaps */
+  width: 100%;
+  /* Optional: Ensures table takes full width */
+}
+
+.appearance-none table th,
+table td {
+  border: 1px solid black;
+  /* Adds black border to both table header and cells */
+  padding: 8px;
+  /* Adds padding for better readability */
+  text-align: left;
+  /* Align text to the left */
+}
+
+.appearance-none table th {
+  background-color: #f2f2f2;
+  /* Optional: Light gray background for headers */
 }
 
 .file\:border-0::file-selector-button {
@@ -1490,10 +1528,6 @@ video {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .sm\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -1510,10 +1544,6 @@ video {
 
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .md\:grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 

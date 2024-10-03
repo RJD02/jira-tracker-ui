@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Accordion } from "./components/ui/Accordion";
 import {
   CheckCircleIcon,
-  CheckSquareIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ClockIcon,
@@ -11,51 +10,18 @@ import {
 } from "lucide-react";
 import { MemberWorkItem } from "./components/workitem/WorkItem.type";
 import { WorkItemComponent } from "./components/workitem/WorkItems";
-import { getLastNBusinessDays } from "./utils/utils";
+import { ParticipantCard } from "./components/ParticipantCard";
+import { getParticipantStats } from "./utils/stat-util";
 
 interface MemberListProps {
+  projectLabel: string;
   members: MemberWorkItem[];
 }
-interface Stats {
-  participated: number;
-  closed: number;
-  planned: number;
-  blocked: number;
-  hoursLogged: number;
-}
 
-function getParticipantStats(member: MemberWorkItem): Stats {
-  const hoursLogged =
-    [...member.workDone, ...member.plannedWork, ...member.blockers].reduce(
-      (acc, item) => {
-        return (
-          acc +
-          item.hoursLogged
-            ?.filter((log) => new Date(log.createdAt) > getLastNBusinessDays(1))
-            .filter((log) => log.author.id == member.id)
-            .reduce((acc, item) => acc + item.timeSpentSeconds, 0)
-        );
-      },
-      0
-    ) / 3600;
-
-  return {
-    participated:
-      member.workDone.length +
-      member.plannedWork.filter((w) => w.recentActivity.length > 0).length,
-    closed: member.workDone.filter((w) => w.statusCategory == "Done").length,
-    planned: member.plannedWork.length,
-    blocked: member.blockers.length,
-    hoursLogged: Math.round(hoursLogged),
-  };
-}
-
-type MemberWithStats = MemberWorkItem & { stats: Stats };
 export default function MemberList(props: MemberListProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeParticipant, setActiveParticipant] = useState(0);
   const [participantsPerPage, setParticipantsPerPage] = useState(6);
-
   useEffect(() => {
     const updateParticipantsPerPage = () => {
       const width = window.innerWidth;
@@ -72,7 +38,7 @@ export default function MemberList(props: MemberListProps) {
       window.removeEventListener("resize", updateParticipantsPerPage);
   }, []);
 
-  const participants: MemberWithStats[] = props.members.map((member) => ({
+  const participants = props.members.map((member) => ({
     ...member,
     stats: getParticipantStats(member),
   }));
@@ -94,38 +60,20 @@ export default function MemberList(props: MemberListProps) {
     <div className="">
       <div className="p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <span className="text-amber-500 italic uppercase text-2xl font-bold mr-2">
+            {props.projectLabel}
+          </span>
           Team Overview
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
           {currentParticipants.map((participant, index) => (
-            <button
-              key={index}
-              className={`p-4 rounded-lg text-left transition-colors ${
-                index + indexOfFirstParticipant === activeParticipant
-                  ? "bg-gradient-to-br from-teal-100 to-blue-100 border-2 border-teal-300"
-                  : "bg-white hover:bg-gray-50 border border-gray-200"
-              }`}
-              onClick={() =>
-                setActiveParticipant(index + indexOfFirstParticipant)
-              }
-            >
-              <div className="font-medium text-lg mb-2 text-gray-800 capitalize">
-                {participant.name.split(" ")[0]}
-              </div>
-              <div className="flex items-center gap-4 text-sm">
-                <div className="flex items-center text-green-600">
-                  <CheckSquareIcon className="w-4 h-4 mr-1" />
-                  <span>{participant.stats.closed}</span>
-                </div>
-                <div className="flex items-center text-blue-600">
-                  <ClockIcon className="w-4 h-4 mr-1" />
-                  <span>{participant.stats.hoursLogged}</span>
-                </div>
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                {participant.stats.participated} tasks participated
-              </div>
-            </button>
+            <ParticipantCard
+              key={participant.id}
+              participantIndex={index + indexOfFirstParticipant}
+              activeParticipant={activeParticipant}
+              setActiveParticipant={setActiveParticipant}
+              participant={participant}
+            />
           ))}
         </div>
         <div className="flex justify-center mt-6 gap-2">
@@ -155,23 +103,6 @@ export default function MemberList(props: MemberListProps) {
           <MemberComponent member={participants[activeParticipant]} />
         </div>
       )}
-    </div>
-  );
-}
-
-function MemberSummary({ member }: { member: MemberWithStats }) {
-  return (
-    <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">
-        {member.name}
-      </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-sm text-gray-600">
-        {Object.entries(member.stats).map(([key, value]) => (
-          <div key={key} className="capitalize">
-            <span className="font-medium text-gray-700">{key}:</span> {value}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

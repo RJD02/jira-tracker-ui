@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { PROJECT } from "../../config/config";
+import { useProjects } from "@/hooks/project-hook";
 
 interface HeaderProps {
-  activeProject?: PROJECT;
-  onClick: (project: PROJECT) => void;
+  activeProject: string | null;
+  onClick: (project: string) => void;
 }
-export function Header(props: HeaderProps) {
+
+export function Header({
+  activeProject,
+  onClick: setActiveProject,
+}: HeaderProps) {
+  const { loading, projects } = useProjects();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { activeProject = "STAR", onClick: setActiveProject } = props;
+  useEffect(() => {
+    if (!activeProject && !loading) {
+      if (projects && projects.length > 0) setActiveProject(projects[0].id);
+    }
+  }, [loading]);
 
-  const links: { id: PROJECT; label: string }[] = [
-    { id: "SALAM", label: "Salam" },
-    { id: "STAR", label: "Star" },
-    { id: "CUSTOMER_SUCCESS", label: "Customer Success" },
-  ];
+  const links = projects;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <header className="bg-background border-b border-border">
@@ -30,8 +36,10 @@ export function Header(props: HeaderProps) {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeProject === link.id
                     ? "bg-blue-100 text-blue-800"
+                    : index === 0
+                    ? "bg-teal-100 text-teal-600"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                } ${index === 0 ? "text-teal-600" : ""}`}
+                }`}
               >
                 {link.label}
               </button>

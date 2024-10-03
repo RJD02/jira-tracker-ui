@@ -1,26 +1,23 @@
+import ReactMarkdown from "react-markdown";
 import { cn } from "../../utils/utils";
-const eventSample = [
-  {
-    date: "February 2022",
-    title: "Application UI code in Tailwind CSS",
-    description:
-      "Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.",
-  },
-  {
-    date: "March 2022",
-    title: "Marketing UI design in Figma",
-    description:
-      "All of the pages and components are first designed in Figma and we keep a parity between the two versions even as we update the project.",
-  },
-  {
-    date: "April 2022",
-    title: "E-Commerce UI code in Tailwind CSS",
-    description:
-      "Get started with dozens of web components and interactive elements built on top of Tail",
-  },
-];
+import { processMarkdownWithADF } from "../../utils/jira-adf-util";
+import remarkGfm from "remark-gfm";
+import rehype from "remark-rehype";
+import rehypeRaw from "rehype-raw";
 
-export const Timeline = ({ events = eventSample, layout = "horizontal" }) => {
+interface Event {
+  date: string;
+  title: string;
+  description: string;
+}
+
+export const Timeline = ({
+  events = [],
+  layout = "horizontal",
+}: {
+  events: Event[];
+  layout: "horizontal" | "vertical";
+}) => {
   return (
     <ol
       className={cn(
@@ -46,8 +43,15 @@ export const Timeline = ({ events = eventSample, layout = "horizontal" }) => {
             {event.date}
           </time>
           <h3 className="font-semibold text-gray-900 ">{event.title}</h3>
-          <p className="mb-4 text-sm font-normal text-gray-500 ">
-            {event.description}
+          <p className="mb-4 text-sm font-normal text-gray-500 appearance-none">
+            <div className="prose">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehype, rehypeRaw]}
+              >
+                {processMarkdownWithADF(event.description)}
+              </ReactMarkdown>
+            </div>
           </p>
         </li>
       ))}{" "}
