@@ -1,30 +1,31 @@
-import { useState } from 'react'
-import { useAuth } from '../../contexts/auth'
-import { fetchLogin } from '../../api/api'
-import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '@/store/Auth'
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const auth = useAuth()
+
+    const authContext = useContext(AuthContext)
     const navigate = useNavigate()
+
+    if (!authContext) {
+        throw new Error('useAuth must be used within an AuthProvider')
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // Handle login logic here
-        const { isAuthenticated, error } = await fetchLogin(email, password)
-        if (isAuthenticated) {
-            auth.login()
+        const success = await authContext.login(email, password)
+        console.log(authContext.isAuthenticated)
+        if (success) {
+            console.log('Login successful')
             navigate('/')
-
+            console.log(authContext.isAuthenticated)
         } else {
-            setError(error || 'An error occurred')
-            console.log(error)
+            console.log('Login failed')
         }
-
         console.log('Login attempted with:', email, password)
-        console.log(isAuthenticated)
 
     }
 
@@ -61,7 +62,6 @@ export default function LoginPage() {
                             required
                         />
                     </div>
-                    <p className='text-red-500'>{error}</p>
                     <button
                         type="submit"
                         className="w-full bg-gradient-to-r from-teal-400 to-blue-500 text-white font-bold py-2 px-4 rounded-md hover:from-teal-500 hover:to-blue-600 transition duration-300"
