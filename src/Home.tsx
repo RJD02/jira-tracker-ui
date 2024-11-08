@@ -44,10 +44,18 @@ export default function MemberList(props: MemberListProps) {
   }));
   const indexOfLastParticipant = currentPage * participantsPerPage;
   const indexOfFirstParticipant = indexOfLastParticipant - participantsPerPage;
-  const currentParticipants = participants.slice(
-    indexOfFirstParticipant,
-    indexOfLastParticipant
-  );
+  const currentParticipants = participants
+    .sort((a, b) => {
+      const diff = b.stats.hoursLogged - a.stats.hoursLogged;
+      if (diff === 0)
+        return b.memberRole == a.memberRole
+          ? 0
+          : b.memberRole > a.memberRole
+          ? -1
+          : 1;
+      return diff;
+    })
+    .slice(indexOfFirstParticipant, indexOfLastParticipant);
 
   const totalPages = Math.ceil(participants.length / participantsPerPage);
 
@@ -194,12 +202,21 @@ function MemberComponent({ member }: { member: MemberWorkItem }) {
 
         {expandedSections.blockers !== false && (
           <Accordion type="single" collapsible className="w-full">
+            <div className="space-y-4 mb-5">
+              {member.backlog.map((item, i) => (
+                <WorkItemComponent
+                  key={i}
+                  item={item}
+                  className="bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200"
+                />
+              ))}
+            </div>
             <div className="space-y-4">
               {member.blockers.map((item, i) => (
                 <WorkItemComponent
                   key={i}
                   item={item}
-                  className="bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200"
+                  className="bg-gradient-to-r from-red-50 to-red-300 border-amber-200"
                 />
               ))}
             </div>

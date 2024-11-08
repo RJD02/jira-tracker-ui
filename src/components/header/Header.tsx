@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
+import Logout from "../login/Logout";
 
 interface HeaderProps {
   activeProject: string | null;
@@ -66,6 +67,7 @@ export function Header({
                       {link.label}
                     </button>
                   ))}
+                  <Logout />
                 </div>
               )}
             </div>

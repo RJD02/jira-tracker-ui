@@ -43,9 +43,7 @@ export function ParticipantCard({
           <ListTodoIcon className="w-5 h-5 mr-1 text-amber-500" />
           <span>
             {participant.stats.planned} |{" "}
-            <span className="text-amber-600">
-              {participant.blockers.length}
-            </span>
+            <span className="text-amber-600">{participant.backlog.length}</span>
           </span>
         </div>
       </div>

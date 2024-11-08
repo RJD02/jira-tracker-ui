@@ -1,16 +1,43 @@
 import React, { useState } from "react";
 import { Header } from "./components/header";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import "./output.css";
 import { ProjectApp } from "./ProjectApp";
 import { client } from "./api/api";
 import { ApolloProvider } from "@apollo/client";
+import LoginPage from "./components/login/LoginPage";
+import { PrivateRoute, PublicRoute } from "./routes/Routes";
+import { AuthProvider } from "./components/login/AuthProvider";
 
 export const RootApp = () => {
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
-        <AppContainer />
+        <AuthProvider>
+          <Router>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              {/* Private route for dashboard (only accessible if authenticated) */}
+              <Route
+                path="/home"
+                element={
+                  <PrivateRoute>
+                    <AppContainer />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </Router>
+        </AuthProvider>
       </ApolloProvider>
     </React.StrictMode>
   );

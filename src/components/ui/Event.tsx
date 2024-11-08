@@ -1,5 +1,5 @@
 import ReactMarkdown from "react-markdown";
-import { cn } from "../../utils/utils";
+import { cn } from "@/lib/utils";
 import { processMarkdownWithADF } from "../../utils/jira-adf-util";
 import remarkGfm from "remark-gfm";
 import rehype from "remark-rehype";
