@@ -1,4 +1,4 @@
-import { serverUrl } from "@/utils/utils";
+import { serverUrl } from "@/lib/utils";
 
 export const useAuth = async (username: string, password: string) => {
     // send request to /auth which is a rest api

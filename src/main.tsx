@@ -7,55 +7,55 @@ import "./output.css";
 import { ProjectApp } from "./ProjectApp";
 import { client } from "./api/api";
 import { ApolloProvider } from "@apollo/client";
-import LoginPage from "./components/login/LoginPage";
+import LoginPage from "./components/Login/LoginPage";
 import { PrivateRoute, PublicRoute } from "./routes/Routes";
-import { AuthProvider } from "./components/login/AuthProvider";
+import { AuthProvider } from "./components/Login/AuthProvider";
 
 export const RootApp = () => {
-  return (
-    <React.StrictMode>
-      <ApolloProvider client={client}>
-        <AuthProvider>
-          <Router>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PublicRoute>
-                    <LoginPage />
-                  </PublicRoute>
-                }
-              />
-              {/* Private route for dashboard (only accessible if authenticated) */}
-              <Route
-                path="/home"
-                element={
-                  <PrivateRoute>
-                    <AppContainer />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Router>
-        </AuthProvider>
-      </ApolloProvider>
-    </React.StrictMode>
-  );
+    return (
+        <React.StrictMode>
+            <ApolloProvider client={client}>
+                <AuthProvider>
+                    <Router>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <PublicRoute>
+                                        <LoginPage />
+                                    </PublicRoute>
+                                }
+                            />
+                            {/* Private route for dashboard (only accessible if authenticated) */}
+                            <Route
+                                path="/home"
+                                element={
+                                    <PrivateRoute>
+                                        <AppContainer />
+                                    </PrivateRoute>
+                                }
+                            />
+                        </Routes>
+                    </Router>
+                </AuthProvider>
+            </ApolloProvider>
+        </React.StrictMode>
+    );
 };
 
 const AppContainer = () => {
-  const [project, setProject] = useState<string | null>(null);
+    const [project, setProject] = useState<string | null>(null);
 
-  return (
-    <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg overflow-hidden">
-      <Header onClick={setProject} activeProject={project} />
-      {project && <ProjectApp project={project} />}
-    </div>
-  );
+    return (
+        <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg overflow-hidden">
+            <Header onClick={setProject} activeProject={project} />
+            {project && <ProjectApp project={project} />}
+        </div>
+    );
 };
 
 const container = document.getElementById("root");
 if (container) {
-  const root = createRoot(container);
-  root.render(<RootApp />);
+    const root = createRoot(container);
+    root.render(<RootApp />);
 }
