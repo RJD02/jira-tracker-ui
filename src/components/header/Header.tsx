@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
-import Logout from "../Login/Logout";
+import Logout from '@/components/Login/Logout'
 
 interface HeaderProps {
     activeProject: string | null;
@@ -35,10 +35,10 @@ export function Header({
                                 key={link.id}
                                 onClick={() => setActiveProject(link.id)}
                                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeProject === link.id
-                                        ? "bg-blue-100 text-blue-800"
-                                        : index === 0
-                                            ? "bg-teal-100 text-teal-600"
-                                            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : index === 0
+                                        ? "bg-teal-100 text-teal-600"
+                                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                                     }`}
                             >
                                 {link.label}

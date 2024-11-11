@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useAuth } from "../Login/AuthProvider";
+import { useAuth } from "@/components/Login/AuthProvider";
 import { Button } from "../ui/Button";
 
 export default function Logout() {
