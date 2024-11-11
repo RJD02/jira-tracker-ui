@@ -1,4 +1,4 @@
-import { useAuth } from "@/components/Login/AuthProvider";
+import { useAuth } from "@/components/Login/AuthProvider.tsx";
 import { Navigate } from "react-router-dom";
 
 // A Private Route component that only renders if the user is authenticated
