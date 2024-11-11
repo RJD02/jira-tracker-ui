@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { useAuth } from "@/components/Login/AuthProvider";
 import { Button } from "../ui/Button";
+import { useAuth } from "./AuthProvider";
 
 export default function Logout() {
     const { setIsAuthenticated } = useAuth();

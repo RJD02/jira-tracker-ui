@@ -7,8 +7,8 @@ import "./output.css";
 import { ProjectApp } from "./ProjectApp";
 import { client } from "./api/api";
 import { ApolloProvider } from "@apollo/client";
-import LoginPage from "./components/Login/LoginPage";
 import { PrivateRoute, PublicRoute } from "./routes/Routes";
+import LoginPage from "./components/Login/LoginPage";
 import { AuthProvider } from "./components/Login/AuthProvider";
 
 export const RootApp = () => {

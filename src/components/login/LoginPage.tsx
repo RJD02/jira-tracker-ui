@@ -12,7 +12,7 @@ import {
     CardTitle,
 } from "@/components/ui/Card";
 import { Spinner } from "@/components/ui/icons";
-import { useLogin } from "@/components/Login/AuthProvider";
+import { useLogin } from "./AuthProvider";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");

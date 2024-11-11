@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
-import Logout from '@/components/Login/Logout'
+import Logout from "../Login/Logout";
 
 interface HeaderProps {
     activeProject: string | null;
