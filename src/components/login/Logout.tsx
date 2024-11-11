@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Button } from "../ui/Button";
 import { useAuth } from "./AuthProvider";
 
-export default function Logout() {
+const Logout = () => {
     const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
@@ -13,3 +13,5 @@ export default function Logout() {
 
     return <Button onClick={handleLogout}>Logout</Button>;
 }
+
+export default Logout

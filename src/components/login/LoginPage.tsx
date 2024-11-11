@@ -14,7 +14,7 @@ import {
 import { Spinner } from "@/components/ui/icons";
 import { useLogin } from "./AuthProvider";
 
-export default function LoginPage() {
+const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     //   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -104,3 +104,5 @@ export default function LoginPage() {
         </div>
     );
 }
+
+export default LoginPage
