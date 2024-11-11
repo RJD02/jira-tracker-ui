@@ -1,5 +1,5 @@
 import { MemberWorkItem } from "../components/workitem/WorkItem.type";
-import { getLastNBusinessDays } from "./utils";
+import { getLastNBusinessDays } from "../lib/utils";
 
 export function getParticipantStats(member: MemberWorkItem): Stats {
   const hoursLogged =
@@ -9,7 +9,9 @@ export function getParticipantStats(member: MemberWorkItem): Stats {
           acc +
           item.hoursLogged
             ?.filter((log) => new Date(log.createdAt) > getLastNBusinessDays(1))
-            .filter((log) => log.author.id == member.id)
+            .filter(
+              (log) => log.author.id == member.id || member.id == "project"
+            )
             .reduce((acc, item) => acc + item.timeSpentSeconds, 0)
         );
       },

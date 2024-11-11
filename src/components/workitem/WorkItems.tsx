@@ -1,5 +1,5 @@
 import { Activities } from "../../utils/activity-helper";
-import { formatDate } from "../../utils/utils";
+import { formatDate } from "../../lib/utils";
 import {
   AccordionItem,
   AccordionTrigger,

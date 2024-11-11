@@ -42,10 +42,12 @@ export type WorkItemWithActivities = WorkItem & Activities;
 export interface MemberWorkItem {
   name: string;
   id: string;
+  memberRole: string;
   // assigneeId: string;
   avatar: string;
-  role: string[];
+  // role: string[];
   workDone: WorkItemWithActivities[];
   plannedWork: WorkItemWithActivities[];
   blockers: WorkItemWithActivities[];
+  backlog: WorkItemWithActivities[];
 }
