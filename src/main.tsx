@@ -8,7 +8,7 @@ import { ProjectApp } from "./ProjectApp";
 import { client } from "./api/api";
 import { ApolloProvider } from "@apollo/client";
 import { PrivateRoute, PublicRoute } from "./routes/Routes";
-import LoginPage from "./components/Login/LoginPage.tsx";
+import LoginPage from "./components/Login/LoginPage";
 import { AuthProvider } from "./components/Auth/AuthProvider.tsx";
 
 export const RootApp = () => {

@@ -1,5 +1,6 @@
-import { useAuth } from "@/components/Login/AuthProvider.tsx";
+import { useAuth } from "../components/Login/AuthProvider";
 import { Navigate } from "react-router-dom";
+useAuth
 
 // A Private Route component that only renders if the user is authenticated
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
