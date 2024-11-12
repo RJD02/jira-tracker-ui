@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router";
+import { Button } from "../ui/Button";
 import { useAuth } from "./AuthProvider";
-import { Button } from "../ui/button";
 
-export default function Logout() {
-  const { setIsAuthenticated } = useAuth();
-  const navigate = useNavigate();
+const Logout = () => {
+    const { setIsAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setIsAuthenticated(false); // Reset authentication state
-    navigate("/"); // Redirect to login page
-  };
+    const handleLogout = () => {
+        setIsAuthenticated(false); // Reset authentication state
+        navigate("/"); // Redirect to login page
+    };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+    return <Button onClick={handleLogout}>Logout</Button>;
 }
+
+export default Logout
