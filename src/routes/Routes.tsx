@@ -1,25 +1,25 @@
-import { useAuth } from "../components/Login/AuthProvider";
+import { useAuth } from "../components/login/AuthProvider";
 import { Navigate } from "react-router-dom";
-useAuth
+useAuth;
 
 // A Private Route component that only renders if the user is authenticated
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-    if (!isAuthenticated) {
-        return <Navigate to="/" />;
-    }
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
-    return children;
+  return children;
 };
 
 // A Public Route component (for Login), prevents access if authenticated
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-    if (isAuthenticated) {
-        return <Navigate to="/home" />;
-    }
+  if (isAuthenticated) {
+    return <Navigate to="/home" />;
+  }
 
-    return children;
+  return children;
 };
