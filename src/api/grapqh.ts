@@ -11,8 +11,22 @@ export const GET_PROJECTS = gql(
 `
 );
 
+export const GET_PROJECTS_FROM_CREDS = gql(`
+query GetProjectsWithCreds(
+    $baseurl: String!
+    $token: String!
+    $username: String!
+) {
+    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {
+        id
+        name
+        key
+    }
+}
+`)
+
 export const LOGIN_MUTATION =
-  gql(`mutation Login($username: String!, $password: String!) {
+    gql(`mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
     token
     user {

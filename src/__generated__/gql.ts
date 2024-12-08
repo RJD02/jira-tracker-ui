@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query Projects {\n    projects {\n      id\n      label\n    }\n  }\n": types.ProjectsDocument,
+    "\nquery GetProjectsWithCreds(\n    $baseurl: String!\n    $token: String!\n    $username: String!\n) {\n    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {\n        id\n        name\n        key\n    }\n}\n": types.GetProjectsWithCredsDocument,
     "mutation Login($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    token\n    user {\n      id\n      username\n    }\n  }\n}": types.LoginDocument,
     "\n  query JiraIssues($project: PROJECT!) {\n    members(project: $project) {\n      name\n      id\n      role\n    }\n    projects {\n      id\n      label\n    }\n    issues(project: $project) {\n      total\n      issues {\n        id\n        key\n        url\n        fields {\n          assignee {\n            displayName\n            accountId\n          }\n          issuetype {\n            description\n            id\n            name\n          }\n          comment {\n            comments {\n              updated\n              id\n              body\n              author {\n                displayName\n                accountId\n              }\n              created\n            }\n          }\n          created\n          description\n          duedate\n          labels\n          worklog {\n            worklogs {\n              id\n              created\n              author {\n                accountId\n                displayName\n              }\n              timeSpent\n              timeSpentSeconds\n            }\n          }\n          priority {\n            id\n            name\n          }\n          status {\n            id\n            name\n            statusCategory {\n              name\n              id\n            }\n          }\n          summary\n          parent {\n            id\n            fields {\n              summary\n              status {\n                id\n                name\n              }\n              issuetype {\n                name\n                id\n                description\n              }\n            }\n            key\n          }\n          updated\n        }\n      }\n    }\n  }\n": types.JiraIssuesDocument,
 };
@@ -36,6 +37,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query Projects {\n    projects {\n      id\n      label\n    }\n  }\n"): (typeof documents)["\n  query Projects {\n    projects {\n      id\n      label\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\nquery GetProjectsWithCreds(\n    $baseurl: String!\n    $token: String!\n    $username: String!\n) {\n    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {\n        id\n        name\n        key\n    }\n}\n"): (typeof documents)["\nquery GetProjectsWithCreds(\n    $baseurl: String!\n    $token: String!\n    $username: String!\n) {\n    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {\n        id\n        name\n        key\n    }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
