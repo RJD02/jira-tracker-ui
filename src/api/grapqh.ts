@@ -11,6 +11,16 @@ export const GET_PROJECTS = gql(
 `
 );
 
+export const GET_ALL_PROJECTS = gql(`
+ query AllProjects {
+    allProjects {
+    id
+    label
+  }
+}
+`);
+
+
 export const LOGIN_MUTATION =
   gql(`mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
@@ -23,16 +33,16 @@ export const LOGIN_MUTATION =
 }`);
 
 export const GET_JIRA_ITEMS = gql(/* GraphQL */ `
-  query JiraIssues($project: PROJECT!) {
+  query JiraIssues($project: String!) {
     members(project: $project) {
       name
       id
       role
     }
-    projects {
-      id
-      label
-    }
+      allProjects {
+    id
+    label
+  }
     issues(project: $project) {
       total
       issues {

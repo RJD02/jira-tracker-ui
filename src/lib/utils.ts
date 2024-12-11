@@ -19,7 +19,7 @@ export const isWeekend = (date: Date) => {
 // Function to calculate the date of the last n business days
 export const getLastNBusinessDays = (n = 1) => {
     let businessDayCount = 0;
-    let currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
     while (businessDayCount < n) {

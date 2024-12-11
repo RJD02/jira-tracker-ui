@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Project } from "./__generated__/graphql";
+// import { Project } from "./__generated__/graphql";
 import { GET_JIRA_ITEMS } from "./api/grapqh";
 import { WorkItem } from "./components/workitem/WorkItem.type";
 import HomePage from "./Home";
@@ -16,13 +16,14 @@ export const ProjectApp: React.FC<AppProps> = ({
   project = "STAR",
 }: AppProps) => {
   const response = useQuery(GET_JIRA_ITEMS, {
-    variables: { project: project as Project },
+    variables: { project: project},
     fetchPolicy: "cache-and-network",
   });
+  // console.log(response.variables)
   const { data, loading, error } = response;
   const jiraDetails = data?.issues;
   const members = data?.members || [];
-  const projects = data?.projects;
+  const projects = data?.allProjects;
   if (loading && !jiraDetails) return <p>Loading</p>;
 
   const workItems: WorkItem[] =
@@ -155,7 +156,7 @@ export const ProjectApp: React.FC<AppProps> = ({
         <HomePage
           members={finalItems.map((item) => item.getParticipant())}
           projectLabel={
-            projects?.find((p) => p.id === project)!.label || project
+            projects?.find((p) => p.label === project)!.label || project
           }
         />
       )}
