@@ -13,13 +13,14 @@ export function Header({
   onClick: setActiveProject,
 }: HeaderProps) {
   const { loading, projects } = useProjects();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (!activeProject && !loading) {
-      if (projects && projects.length > 0) setActiveProject(projects[0].id);
+    if (!activeProject && !loading && projects && projects.length > 0) {
+      setActiveProject(projects[0].label);
     }
-  }, [loading]);
+  }, [loading, projects]); // Add `projects` as a dependency
 
   const links = projects;
   if (loading) return <div>Loading...</div>;
@@ -32,10 +33,10 @@ export function Header({
           <div className="flex items-center gap-2">
             {links.slice(0, 2).map((link, index) => (
               <button
-                key={link.id}
-                onClick={() => setActiveProject(link.id)}
+                key={link.label}
+                onClick={() => setActiveProject(link.label)}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeProject === link.id
+                  activeProject === link.label
                     ? "bg-blue-100 text-blue-800"
                     : index === 0
                     ? "bg-teal-100 text-teal-600"
@@ -57,9 +58,9 @@ export function Header({
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                   {links.slice(2).map((link) => (
                     <button
-                      key={link.id}
+                      key={link.label}
                       onClick={() => {
-                        setActiveProject(link.id);
+                        setActiveProject(link.label);
                         setIsDropdownOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
