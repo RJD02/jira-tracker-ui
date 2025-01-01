@@ -37,7 +37,12 @@ export function WorkItemComponent({ item, className }: WorkItemComponentProps) {
             <div className="flex items-center space-x-2">
               <a
                 className="font-medium text-amber-600"
-                href={item.url}
+                // href={item.url}
+                href={
+                  item.url.startsWith('http://') || item.url.startsWith('https://')
+                    ? item.url // Use the URL directly if it starts with http or https
+                    : `https://${item.url}` // Prepend https:// if it doesn't
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
