@@ -33,13 +33,16 @@ export const useGetProjectsFromCreds = () => {
                     username
                 },
             });
+            if (!result.data?.jiraprojects) {
+                throw new Error('No jira projects returned')
+            }
 
             return {
-                projects: result.data?.jiraprojects || emptyRes,
+                projects: result.data.jiraprojects || emptyRes,
                 loading
             };
         } catch (error) {
-            console.error('Error fetching projects:', error);
+            console.log('Error fetching projects:', error);
             return {
                 projects: emptyRes,
                 loading: false
