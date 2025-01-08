@@ -53,3 +53,32 @@ export const useGetProjectsFromCreds = () => {
   );
   return getProjects;
 };
+    const getProjects = useCallback(async (baseUrl: string, token: string, username: string) => {
+        const emptyRes: JiraProject[] | null = []
+        try {
+            const result = await fetchProjects({
+                variables: {
+                    baseurl: baseUrl,
+                    token,
+                    username
+                },
+            });
+            if (!result.data?.jiraprojects) {
+                throw new Error('No jira projects returned')
+            }
+
+            return {
+                projects: result.data.jiraprojects || emptyRes,
+                loading
+            };
+        } catch (error) {
+            console.log('Error fetching projects:', error);
+            return {
+                projects: emptyRes,
+                loading: false
+            };
+        }
+    }, [fetchProjects]);
+    return getProjects
+
+}
