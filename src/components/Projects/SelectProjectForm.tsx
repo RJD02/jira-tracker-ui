@@ -1,10 +1,8 @@
-import { useGetProjectsFromCreds } from "@/hooks/jira-hook";
+import { useCreateProject, useGetProjectsFromCreds } from "@/hooks/jira-hook";
 import { ProjectContext, ProjectType } from "@/store/Projects";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCallback, useContext } from "react";
 import * as Yup from "yup";
-import { useState } from "react";
-// import { useGetProjectsFromCreds } from '@/hooks/jira-hook';
 
 // Validation schema
 const ProjectSchema = Yup.object().shape({
@@ -15,24 +13,7 @@ const ProjectSchema = Yup.object().shape({
   ),
 });
 
-// interface Project {
-//   id: string;
-//   name: string;
-//   key: string;
-// }
-
-// Sample project list
-// const projectList: Project[] = [
-//   { id: "web-app", name: "Web Application Redesign", key: "WA" },
-//   { id: "mobile-app", name: "Mobile App Development", key: "MA" },
-//   { id: "data-migration", name: "Database Migration", key: "DM" },
-//   { id: "ux-research", name: "UX Research Project", key: "UX" },
-// ];
-
-const ProjectDropdownForm = () => {
-  //   const [projects, setProjects] = useState<ProjectType | null | undefined>(
-  //     null
-  //   );
+const SelectProjectForm = () => {
   const initialValues = {
     projectName: "",
     priority: "",
@@ -41,20 +22,52 @@ const ProjectDropdownForm = () => {
 
   const projCtx = useContext(ProjectContext);
 
+  const [createSiteUrl, createProject] = useCreateProject();
+
   //   const getProjects = useGetProjectsFromCreds();
 
   //   const projects = getProjects("https://jira.com", "token", "email");
 
   // const getAllProjects = useGetProjectsFromCreds()
-  console.log(projCtx?.projects);
+  // console.log(projCtx?.projects);
 
-  const handleSubmit = (values: any, { setSubmitting, resetForm }) => {
-    // Simulate API call or processing
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-      resetForm();
-    }, 400);
+  const handleSubmit = async (values: any, { setSubmitting, resetForm }) => {
+    // Need logic for creating siteUrl and project
+
+    try {
+      console.log("base url", projCtx);
+      const res = await createSiteUrl(projCtx?.baseUrl || "");
+      const siteId = parseInt(res?.data.createSiteUrl.site_id);
+      console.log("Site_id", siteId);
+      // const projectId = values.projectName;
+      // const label = projCtx?.projects.find(
+      //   (proj) => proj.id === projectId
+      // )?.key;
+      // const baseUrl = projCtx?.baseUrl;
+      // const email = projCtx?.email;
+      // const token = projCtx?.token;
+      // const project = await createProject(
+      //   projectId,
+      //   siteId,
+      //   label || "",
+      //   baseUrl || "",
+      //   email || "",
+      //   token || "",
+      //   ""
+      // );
+      // console.log(project);
+      // console.log(values);
+    } catch (error) {
+      console.log(error);
+    }
+    setSubmitting(false);
+    // resetForm();
+
+    // setTimeout(() => {
+    //   alert(JSON.stringify(values, null, 2));
+    //   setSubmitting(false);
+    //   resetForm();
+    // }, 400);
   };
 
   return (
@@ -96,11 +109,15 @@ const ProjectDropdownForm = () => {
                     `}
                   >
                     <option value="">Choose a project</option>
-                    {projCtx?.projects?.map((project) => (
-                      <option key={project.id} value={project.id}>
-                        {project.name}
-                      </option>
-                    ))}
+                    {projCtx && projCtx?.projects.length > 0 ? (
+                      projCtx?.projects.map((project) => (
+                        <option key={project.id} value={project.id}>
+                          {project.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No projects found</option>
+                    )}
                   </select>
                 )}
               </Field>
@@ -203,4 +220,4 @@ const ProjectDropdownForm = () => {
   );
 };
 
-export default ProjectDropdownForm;
+export default SelectProjectForm;

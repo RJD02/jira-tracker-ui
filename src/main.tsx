@@ -13,8 +13,9 @@ import { AuthProvider } from "./components/login/AuthProvider";
 import { AddProjectForm } from "./components/Projects/AddProject";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
-import ProjectDropdownForm from "./components/Projects/SelectProjectForm";
+// import SelectProjectForm from "./components/Projects/SelectProjectForm";
 import { ProjectContext } from "./store/Projects";
+import SelectProjectForm from "./components/Projects/SelectProjectForm";
 
 export const RootApp = () => {
   return (
@@ -39,6 +40,7 @@ export const RootApp = () => {
               username: "",
               token: "",
               email: "",
+              baseUrl: "",
             }}
           >
             <Router>
@@ -72,7 +74,7 @@ export const RootApp = () => {
                   path="/projects"
                   element={
                     <PrivateRoute>
-                      <ProjectDropdownForm />
+                      <SelectProjectForm />
                     </PrivateRoute>
                   }
                 />

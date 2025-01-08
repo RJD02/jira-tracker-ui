@@ -44,7 +44,7 @@ export const AddProjectForm = () => {
         values.accessToken,
         values.email
       );
-      setProjects(allProjects);
+      // setProjects(allProjects);
       console.log(allProjects);
       if (allProjects.length === 0) {
         throw new Error("Invalid credentials");
@@ -62,6 +62,7 @@ export const AddProjectForm = () => {
         projectCtx.email = values.email;
         projectCtx.token = values.accessToken;
         projectCtx.username = values.email;
+        projectCtx.baseUrl = values.baseUrl;
       }
       navigate("/projects");
     } catch (e) {

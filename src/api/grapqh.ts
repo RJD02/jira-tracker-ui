@@ -11,14 +11,27 @@ export const GET_PROJECTS = gql(
 `
 );
 
-export const GET_ALL_PROJECTS = gql(`
- query AllProjects {
-    allProjects {
-    id
-    label
-  }
-}
-`);
+// export const CREATE_PROJECT_MUTATION = gql(`
+//   mutation Mutation($createProject2Id: String!, $siteId: Int!, $label: String!, $projectKey: String!, $baseurl: String!, $email: String!, $token: String!) {
+//   createProject2(id: $createProject2Id, site_id: $siteId, label: $label, project_key: $projectKey, baseurl: $baseurl, email: $email, token: $token) {
+//     email
+//     id
+//     label
+//     project_key
+//     site_id
+//     token
+//   }
+// }
+//   `);
+
+// export const CREATE_SITEURL_MUTATION = gql(`
+//    mutation CreateSiteUrl($siteUrl: String!) {
+//   createSiteUrl(site_url: $siteUrl) {
+//     site_id
+//     site_url
+//   }
+// }
+//   `);
 
 export const GET_PROJECTS_FROM_CREDS = gql(`
 query GetProjectsWithCreds(
@@ -46,7 +59,11 @@ export const LOGIN_MUTATION =
 }`);
 
 export const GET_JIRA_ITEMS = gql(/* GraphQL */ `
+<<<<<<< HEAD
   query JiraIssues($project: String!) {
+=======
+  query JiraIssues($project: Project2!) {
+>>>>>>> 550bbe1 (Add mutation queries for creating project)
     members(project: $project) {
       name
       id

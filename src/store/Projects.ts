@@ -9,6 +9,7 @@ export type ProjectType = {
   username: string;
   token: string;
   email: string;
+  baseUrl: string;
 };
 
 export const ProjectContext = createContext<ProjectType | undefined>(undefined);
