@@ -1,14 +1,13 @@
 import { useGetProjectsFromCreds } from "@/hooks/jira-hook";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { JiraProject } from "@/__generated__/graphql";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { ProjectContext } from "@/store/Projects";
 
 export const AddProjectForm = () => {
-  const [projects, setProjects] = useState<any>(null);
+  // const [projects, setProjects] = useState<any>(null);
 
   const projectCtx = useContext(ProjectContext);
 

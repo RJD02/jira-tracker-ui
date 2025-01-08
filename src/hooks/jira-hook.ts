@@ -56,50 +56,6 @@ export const useGetProjectsFromCreds = () => {
   );
   return getProjects;
 };
-    const getProjects = useCallback(async (baseUrl: string, token: string, username: string) => {
-        const emptyRes: JiraProject[] | null = []
-        try {
-            const result = await fetchProjects({
-                variables: {
-                    baseurl: baseUrl,
-                    token,
-                    username
-                },
-            });
-            if (!result.data?.jiraprojects) {
-                throw new Error('No jira projects returned')
-            }
-
-            return {
-                projects: result.data.jiraprojects || emptyRes,
-                loading
-            };
-        } catch (error) {
-            console.log('Error fetching projects:', error);
-            return {
-                projects: emptyRes,
-                loading: false
-            };
-        if (!result.data?.jiraprojects) {
-          throw new Error("No jira projects returned");
-        }
-
-        return {
-          projects: result.data.jiraprojects || emptyRes,
-          loading,
-        };
-      } catch (error) {
-        console.log("Error fetching projects:", error);
-        return {
-          projects: emptyRes,
-          loading: false,
-        };
-      }
-    },
-    [fetchProjects]
-  );
-  return getProjects;
-};
 
 export const useCreateProject = () => {
   console.log(CREATE_SITEURL_MUTATION);
@@ -132,7 +88,7 @@ export const useCreateProject = () => {
     baseUrl: string,
     email: string,
     token: string,
-    project_key: string
+    projectKey: string
   ) => {
     try {
       console.log("All variables", {
@@ -142,7 +98,7 @@ export const useCreateProject = () => {
         baseUrl,
         email,
         token,
-        project_key,
+        projectKey,
       });
       const result = await fetchProject({
         variables: {
@@ -152,7 +108,7 @@ export const useCreateProject = () => {
           baseurl: baseUrl,
           email,
           token,
-          project_key,
+          projectKey,
         },
       });
       return result;

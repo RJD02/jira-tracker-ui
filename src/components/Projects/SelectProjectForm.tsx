@@ -39,24 +39,27 @@ const SelectProjectForm = () => {
       const res = await createSiteUrl(projCtx?.baseUrl || "");
       const siteId = parseInt(res?.data.createSiteUrl.site_id);
       console.log("Site_id", siteId);
-      // const projectId = values.projectName;
-      // const label = projCtx?.projects.find(
-      //   (proj) => proj.id === projectId
-      // )?.key;
-      // const baseUrl = projCtx?.baseUrl;
-      // const email = projCtx?.email;
-      // const token = projCtx?.token;
-      // const project = await createProject(
-      //   projectId,
-      //   siteId,
-      //   label || "",
-      //   baseUrl || "",
-      //   email || "",
-      //   token || "",
-      //   ""
-      // );
-      // console.log(project);
-      // console.log(values);
+      const projectId = values.projectName;
+      const label = projCtx?.projects.find(
+        (proj) => proj.id === projectId
+      )?.name;
+      const projectKey = projCtx?.projects.find(
+        (proj) => proj.id === projectId
+      )?.key;
+      const baseUrl = projCtx?.baseUrl;
+      const email = projCtx?.email;
+      const token = projCtx?.token;
+      const project = await createProject(
+        projectId,
+        siteId,
+        label || "",
+        baseUrl || "",
+        email || "",
+        token || "",
+        projectKey || ""
+      );
+      console.log(project);
+      console.log(values);
     } catch (error) {
       console.log(error);
     }
