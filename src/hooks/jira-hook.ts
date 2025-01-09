@@ -2,8 +2,10 @@ import { JiraProject, Project } from "@/__generated__/graphql";
 import {
   CREATE_PROJECT_MUTATION,
   CREATE_SITEURL_MUTATION,
+  CREATE_USER_MUTATION,
   GET_JIRA_ITEMS,
   GET_PROJECTS_FROM_CREDS,
+  GET_USERS_FROM_CREDS,
 } from "@/api/grapqh";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useCallback } from "react";
@@ -118,4 +120,62 @@ export const useCreateProject = () => {
     }
   };
   return [createSiteUrl, createProject] as const;
+};
+
+export const useGetJiraUsers = () => {
+  const [fetchUsers, { loading, data }] = useLazyQuery(GET_USERS_FROM_CREDS);
+  const getJiraUsers = async (
+    baseUrl: string,
+    token: string,
+    username: string,
+    userKey: string
+  ) => {
+    try {
+      const result = await fetchUsers({
+        variables: {
+          baseurl: baseUrl,
+          token,
+          username,
+          userKey,
+        },
+      });
+      console.log(result);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
+  return getJiraUsers;
+};
+
+export const useCreateUsers = () => {
+  const [createUser, { loading, data }] = useMutation(CREATE_USER_MUTATION);
+  const createJiraUser = async (
+    id: string,
+    userName: string,
+    projectId: string,
+    role: string
+  ) => {
+    try {
+      const result = await createUser({
+        variables: {
+          jiraData: [
+            {
+              id,
+              name: userName,
+              projectId,
+              role,
+            },
+          ],
+        },
+      });
+      console.log(result);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
+  return createJiraUser;
 };

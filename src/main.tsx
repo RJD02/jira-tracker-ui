@@ -16,6 +16,7 @@ import "react-toastify/ReactToastify.css";
 // import SelectProjectForm from "./components/Projects/SelectProjectForm";
 import { ProjectContext } from "./store/Projects";
 import SelectProjectForm from "./components/Projects/SelectProjectForm";
+import SelectUserForm from "./components/Projects/SelectUsersForm";
 
 export const RootApp = () => {
   return (
@@ -41,10 +42,19 @@ export const RootApp = () => {
               token: "",
               email: "",
               baseUrl: "",
+              projectId: "",
             }}
           >
             <Router>
               <Routes>
+                <Route
+                  path="/selectusers"
+                  element={
+                    <PrivateRoute>
+                      <SelectUserForm />
+                    </PrivateRoute>
+                  }
+                />
                 <Route
                   path="/"
                   element={

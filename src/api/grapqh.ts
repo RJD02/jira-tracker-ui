@@ -20,6 +20,26 @@ export const GET_ALL_PROJECTS = gql(`
  }
  `);
 
+export const CREATE_USER_MUTATION = gql(`
+  mutation JiraUserData($jiraData: [TeamInput!]!) {
+  jiraUserData(jiraData: $jiraData) {
+    message
+    success
+  }
+}
+  `);
+
+export const GET_USERS_FROM_CREDS = gql(`
+  query GetUsers($baseurl: String!, $token: String!, $username: String!, $userKey: String!) {
+  getUsers(baseurl: $baseurl, token: $token, username: $username, userKey: $userKey) {
+    account_id
+    active
+    displayName
+    emailAddress
+  }
+}
+  `);
+
 export const CREATE_PROJECT_MUTATION = gql(`
   mutation Mutation($createProject2Id: String!, $siteId: Int!, $label: String!, $projectKey: String!, $baseurl: String!, $email: String!, $token: String!) {
   createProject2(id: $createProject2Id, site_id: $siteId, label: $label, project_key: $projectKey, baseurl: $baseurl, email: $email, token: $token) {

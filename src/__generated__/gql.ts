@@ -15,6 +15,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  query Projects {\n    projects {\n      id\n      label\n    }\n  }\n": types.ProjectsDocument,
     "\n  query AllProjects {\n     allProjects {\n     id\n     label\n   }\n }\n ": types.AllProjectsDocument,
+    "\n  mutation JiraUserData($jiraData: [TeamInput!]!) {\n  jiraUserData(jiraData: $jiraData) {\n    message\n    success\n  }\n}\n  ": types.JiraUserDataDocument,
+    "\n  query GetUsers($baseurl: String!, $token: String!, $username: String!, $userKey: String!) {\n  getUsers(baseurl: $baseurl, token: $token, username: $username, userKey: $userKey) {\n    account_id\n    active\n    displayName\n    emailAddress\n  }\n}\n  ": types.GetUsersDocument,
     "\n  mutation Mutation($createProject2Id: String!, $siteId: Int!, $label: String!, $projectKey: String!, $baseurl: String!, $email: String!, $token: String!) {\n  createProject2(id: $createProject2Id, site_id: $siteId, label: $label, project_key: $projectKey, baseurl: $baseurl, email: $email, token: $token) {\n    email\n    id\n    label\n    project_key\n    site_id\n    token\n  }\n}\n  ": types.MutationDocument,
     "\n   mutation CreateSiteUrl($siteUrl: String!) {\n  createSiteUrl(site_url: $siteUrl) {\n    site_id\n    site_url\n  }\n}\n  ": types.CreateSiteUrlDocument,
     "\nquery GetProjectsWithCreds(\n    $baseurl: String!\n    $token: String!\n    $username: String!\n) {\n    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {\n        id\n        name\n        key\n    }\n}\n": types.GetProjectsWithCredsDocument,
@@ -44,6 +46,14 @@ export function gql(source: "\n  query Projects {\n    projects {\n      id\n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query AllProjects {\n     allProjects {\n     id\n     label\n   }\n }\n "): (typeof documents)["\n  query AllProjects {\n     allProjects {\n     id\n     label\n   }\n }\n "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation JiraUserData($jiraData: [TeamInput!]!) {\n  jiraUserData(jiraData: $jiraData) {\n    message\n    success\n  }\n}\n  "): (typeof documents)["\n  mutation JiraUserData($jiraData: [TeamInput!]!) {\n  jiraUserData(jiraData: $jiraData) {\n    message\n    success\n  }\n}\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetUsers($baseurl: String!, $token: String!, $username: String!, $userKey: String!) {\n  getUsers(baseurl: $baseurl, token: $token, username: $username, userKey: $userKey) {\n    account_id\n    active\n    displayName\n    emailAddress\n  }\n}\n  "): (typeof documents)["\n  query GetUsers($baseurl: String!, $token: String!, $username: String!, $userKey: String!) {\n  getUsers(baseurl: $baseurl, token: $token, username: $username, userKey: $userKey) {\n    account_id\n    active\n    displayName\n    emailAddress\n  }\n}\n  "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

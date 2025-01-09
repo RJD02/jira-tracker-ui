@@ -2,6 +2,7 @@ import { useCreateProject, useGetProjectsFromCreds } from "@/hooks/jira-hook";
 import { ProjectContext, ProjectType } from "@/store/Projects";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCallback, useContext } from "react";
+import { useNavigate } from "react-router";
 import * as Yup from "yup";
 
 // Validation schema
@@ -23,6 +24,8 @@ const SelectProjectForm = () => {
   const projCtx = useContext(ProjectContext);
 
   const [createSiteUrl, createProject] = useCreateProject();
+
+  const navigate = useNavigate();
 
   //   const getProjects = useGetProjectsFromCreds();
 
@@ -60,6 +63,8 @@ const SelectProjectForm = () => {
       );
       console.log(project);
       console.log(values);
+      if (projCtx) projCtx.projectId = projectId;
+      navigate("/selectusers");
     } catch (error) {
       console.log(error);
     }
