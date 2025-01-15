@@ -38,10 +38,25 @@ export default function MemberList(props: MemberListProps) {
       window.removeEventListener("resize", updateParticipantsPerPage);
   }, []);
 
-  const participants = props.members.map((member) => ({
+  const allParticipants = props.members.map((member) => ({
     ...member,
     stats: getParticipantStats(member),
   }));
+  // if (
+  //   participant.stats.hoursLogged === 0 &&
+  //   participant.stats.closed === 0 &&
+  //   participant.stats.planned === 0 &&
+  //   participant.stats.participated === 0
+  // )
+  //   return null;
+  // only take those participants whose stats are not all 0
+  const participants = allParticipants.filter(
+    (participant) =>
+      participant.stats.hoursLogged !== 0 ||
+      participant.stats.closed !== 0 ||
+      participant.stats.planned !== 0 ||
+      participant.stats.participated !== 0
+  );
   const indexOfLastParticipant = currentPage * participantsPerPage;
   const indexOfFirstParticipant = indexOfLastParticipant - participantsPerPage;
   const currentParticipants = participants
