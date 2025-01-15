@@ -3,20 +3,20 @@ import { getLastNBusinessDays } from "../lib/utils";
 
 export function getParticipantStats(member: MemberWorkItem): Stats {
   const hoursLogged =
-    [...member.workDone, ...member.plannedWork, ...member.blockers].reduce(
-      (acc, item) => {
-        return (
-          acc +
-          item.hoursLogged
-            ?.filter((log) => new Date(log.createdAt) > getLastNBusinessDays(1))
-            .filter(
-              (log) => log.author.id == member.id || member.id == "project"
-            )
-            .reduce((acc, item) => acc + item.timeSpentSeconds, 0)
-        );
-      },
-      0
-    ) / 3600;
+    [
+      ...member.workDone,
+      ...member.backlog,
+      ...member.plannedWork,
+      ...member.blockers,
+    ].reduce((acc, item) => {
+      return (
+        acc +
+        item.hoursLogged
+          ?.filter((log) => new Date(log.createdAt) > getLastNBusinessDays(1))
+          .filter((log) => log.author.id == member.id || member.id == "project")
+          .reduce((acc, item) => acc + item.timeSpentSeconds, 0)
+      );
+    }, 0) / 3600;
 
   return {
     participated:
