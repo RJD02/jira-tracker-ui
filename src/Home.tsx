@@ -42,13 +42,6 @@ export default function MemberList(props: MemberListProps) {
     ...member,
     stats: getParticipantStats(member),
   }));
-  // if (
-  //   participant.stats.hoursLogged === 0 &&
-  //   participant.stats.closed === 0 &&
-  //   participant.stats.planned === 0 &&
-  //   participant.stats.participated === 0
-  // )
-  //   return null;
   // only take those participants whose stats are not all 0
   const participants = allParticipants.filter(
     (participant) =>
