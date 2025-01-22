@@ -46,6 +46,12 @@ export default function MemberList(props: MemberListProps) {
   const indexOfFirstParticipant = indexOfLastParticipant - participantsPerPage;
   const currentParticipants = participants
     .sort((a, b) => {
+      // Check if either name is "project" and prioritize it
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+      if (aName === "project" && bName !== "project") return -1;
+      if (bName === "project" && aName !== "project") return 1;
+
       const diff = b.stats.hoursLogged - a.stats.hoursLogged;
       if (diff === 0)
         return b.memberRole == a.memberRole
