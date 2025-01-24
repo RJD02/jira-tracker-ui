@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
 import Logout from "../login/Logout";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   activeProject: string | null;
@@ -33,10 +34,10 @@ export function Header({
           <div className="flex items-center gap-2">
             {links.slice(0, 2).map((link, index) => (
               <button
-                key={link.label}
-                onClick={() => setActiveProject(link.label)}
+                key={link.id}
+                onClick={() => setActiveProject(link.id)}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeProject === link.label
+                  activeProject === link.id
                     ? "bg-blue-100 text-blue-800"
                     : index === 0
                     ? "bg-teal-100 text-teal-600"
@@ -58,9 +59,9 @@ export function Header({
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                   {links.slice(2).map((link) => (
                     <button
-                      key={link.label}
+                      key={link.id}
                       onClick={() => {
-                        setActiveProject(link.label);
+                        setActiveProject(link.id);
                         setIsDropdownOpen(false);
                       }}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -68,10 +69,13 @@ export function Header({
                       {link.label}
                     </button>
                   ))}
-                  <Logout />
                 </div>
               )}
             </div>
+            <Logout />
+            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <Link to="/add">Add Project</Link>
+            </button>
           </div>
           {/* </nav> */}
         </div>

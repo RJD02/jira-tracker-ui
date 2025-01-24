@@ -1,7 +1,7 @@
 import { gql } from "../__generated__/gql";
 
 export const GET_PROJECTS = gql(
-    `
+  `
   query Projects {
     projects {
       id
@@ -12,14 +12,69 @@ export const GET_PROJECTS = gql(
 );
 
 export const GET_ALL_PROJECTS = gql(`
- query AllProjects {
-    allProjects {
-    id
-    label
+  query AllProjects {
+     allProjects {
+     id
+     label
+   }
+ }
+ `);
+
+export const CREATE_USER_MUTATION = gql(`
+  mutation JiraUserData($jiraData: [TeamInput!]!) {
+  jiraUserData(jiraData: $jiraData) {
+    message
+    success
   }
 }
-`);
+  `);
 
+export const GET_USERS_FROM_CREDS = gql(`
+  query GetUsers($baseurl: String!, $token: String!, $username: String!, $userKey: String!) {
+  getUsers(baseurl: $baseurl, token: $token, username: $username, userKey: $userKey) {
+    account_id
+    active
+    displayName
+    emailAddress
+  }
+}
+  `);
+
+export const CREATE_PROJECT_MUTATION = gql(`
+  mutation Mutation($createProject2Id: String!, $siteId: Int!, $label: String!, $projectKey: String!, $baseurl: String!, $email: String!, $token: String!) {
+  createProject2(id: $createProject2Id, site_id: $siteId, label: $label, project_key: $projectKey, baseurl: $baseurl, email: $email, token: $token) {
+    email
+    id
+    label
+    project_key
+    site_id
+    token
+  }
+}
+  `);
+
+export const CREATE_SITEURL_MUTATION = gql(`
+   mutation CreateSiteUrl($siteUrl: String!) {
+  createSiteUrl(site_url: $siteUrl) {
+    site_id
+    site_url
+  }
+}
+  `);
+
+export const GET_PROJECTS_FROM_CREDS = gql(`
+query GetProjectsWithCreds(
+    $baseurl: String!
+    $token: String!
+    $username: String!
+) {
+    jiraprojects(baseurl: $baseurl, token: $token, username: $username) {
+        id
+        name
+        key
+    }
+}
+`);
 
 export const LOGIN_MUTATION =
   gql(`mutation Login($username: String!, $password: String!) {
@@ -39,10 +94,10 @@ export const GET_JIRA_ITEMS = gql(/* GraphQL */ `
       id
       role
     }
-      allProjects {
-    id
-    label
-  }
+    allProjects {
+      id
+      label
+    }
     issues(project: $project) {
       total
       issues {
