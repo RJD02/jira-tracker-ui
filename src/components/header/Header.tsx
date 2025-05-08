@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, RefreshCcwIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
-import Logout from "../login/Logout";
-
-interface HeaderProps {
-  activeProject: string | null;
-  onClick: (project: string) => void;
-}
+import Logout from "../Login/Logout";
+import { useActiveProject } from "@/contexts/activeProject";
 
 export function Header({
-  activeProject,
-  onClick: setActiveProject,
-}: HeaderProps) {
-  const { loading, projects } = useProjects();
+  setHardRefresh,
+}: {
+  setHardRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const [projects, { loading }] = useProjects();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { activeProject, setActiveProject } = useActiveProject();
 
   useEffect(() => {
     if (!activeProject && !loading && projects && projects.length > 0) {
       setActiveProject(projects[0].label);
     }
-  }, [loading, projects]); // Add `projects` as a dependency
+  }, [loading]); // Add `projects` as a dependency
+  const sortedProjects = [...projects].sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
+  const links = sortedProjects;
 
-  const links = projects;
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -31,6 +32,12 @@ export function Header({
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-4">
           <h1 className="text-3xl font-bold text-gray-800">Jira Tracker App</h1>
           <div className="flex items-center gap-2">
+            <RefreshCcwIcon
+              className="w-8 h-8 text-gray-500 cursor-pointer"
+              onClick={() => {
+                setHardRefresh(true);
+              }}
+            />
             {links.slice(0, 2).map((link, index) => (
               <button
                 key={link.label}

@@ -8,35 +8,38 @@ import { ProjectApp } from "./ProjectApp";
 import { client } from "./api/api";
 import { ApolloProvider } from "@apollo/client";
 import { PrivateRoute, PublicRoute } from "./routes/Routes";
-import LoginPage from "./components/login/LoginPage";
-import { AuthProvider } from "./components/login/AuthProvider";
+import LoginPage from "./components/Login/LoginPage";
+import { AuthProvider } from "./components/Login/AuthProvider";
+import { ActiveProjectProvider } from "./contexts/ActiveProjectProvider";
 
 export const RootApp = () => {
   return (
     <React.StrictMode>
       <ApolloProvider client={client}>
         <AuthProvider>
-          <Router>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PublicRoute>
-                    <LoginPage />
-                  </PublicRoute>
-                }
-              />
-              {/* Private route for dashboard (only accessible if authenticated) */}
-              <Route
-                path="/home"
-                element={
-                  <PrivateRoute>
-                    <AppContainer />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Router>
+          <ActiveProjectProvider>
+            <Router>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <PublicRoute>
+                      <LoginPage />
+                    </PublicRoute>
+                  }
+                />
+                {/* Private route for dashboard (only accessible if authenticated) */}
+                <Route
+                  path="/home"
+                  element={
+                    <PrivateRoute>
+                      <AppContainer />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </Router>
+          </ActiveProjectProvider>
         </AuthProvider>
       </ApolloProvider>
     </React.StrictMode>
@@ -44,12 +47,12 @@ export const RootApp = () => {
 };
 
 const AppContainer = () => {
-  const [project, setProject] = useState<string | null>(null);
+  const [hardRefresh, setHardRefresh] = useState(false);
 
   return (
     <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg overflow-hidden">
-      <Header onClick={setProject} activeProject={project} />
-      {project && <ProjectApp project={project} />}
+      <Header setHardRefresh={setHardRefresh} />
+      <ProjectApp hardRefresh={hardRefresh} />
     </div>
   );
 };

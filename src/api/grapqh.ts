@@ -1,7 +1,7 @@
 import { gql } from "../__generated__/gql";
 
 export const GET_PROJECTS = gql(
-    `
+  `
   query Projects {
     projects {
       id
@@ -20,7 +20,6 @@ export const GET_ALL_PROJECTS = gql(`
 }
 `);
 
-
 export const LOGIN_MUTATION =
   gql(`mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
@@ -33,17 +32,17 @@ export const LOGIN_MUTATION =
 }`);
 
 export const GET_JIRA_ITEMS = gql(/* GraphQL */ `
-  query JiraIssues($project: String!) {
+  query JiraIssues($project: String!, $forced: Boolean) {
     members(project: $project) {
       name
       id
       role
     }
-      allProjects {
-    id
-    label
-  }
-    issues(project: $project) {
+    allProjects {
+      id
+      label
+    }
+    issues(project: $project, forced: $forced) {
       total
       issues {
         id
