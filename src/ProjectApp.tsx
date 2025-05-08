@@ -7,10 +7,11 @@ import { Participant } from "./utils/Participant";
 import { useJiraDetails } from "./hooks/jira-hook";
 import { useActiveProject } from "./contexts/activeProject";
 
-export const ProjectApp: React.FC = () => {
+export const ProjectApp = ({ hardRefresh }: { hardRefresh: boolean }) => {
   const { activeProject } = useActiveProject();
   const project = activeProject || "Star";
-  const [data, { loading, error }] = useJiraDetails(project);
+
+  const [data, { loading, error }] = useJiraDetails(project, hardRefresh);
 
   const jiraDetails = data?.issues;
   const members = data?.members || [];

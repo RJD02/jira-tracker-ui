@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, RefreshCcwIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
 import Logout from "../Login/Logout";
 import { useActiveProject } from "@/contexts/activeProject";
 
-export function Header() {
+export function Header({
+  setHardRefresh,
+}: {
+  setHardRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [projects, { loading }] = useProjects();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,6 +32,12 @@ export function Header() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-4">
           <h1 className="text-3xl font-bold text-gray-800">Jira Tracker App</h1>
           <div className="flex items-center gap-2">
+            <RefreshCcwIcon
+              className="w-8 h-8 text-gray-500 cursor-pointer"
+              onClick={() => {
+                setHardRefresh(true);
+              }}
+            />
             {links.slice(0, 2).map((link, index) => (
               <button
                 key={link.label}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "./components/header";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -47,10 +47,12 @@ export const RootApp = () => {
 };
 
 const AppContainer = () => {
+  const [hardRefresh, setHardRefresh] = useState(false);
+
   return (
     <div className="max-w-full mx-auto bg-gradient-to-br from-teal-50 to-blue-50 shadow-lg overflow-hidden">
-      <Header />
-      <ProjectApp />
+      <Header setHardRefresh={setHardRefresh} />
+      <ProjectApp hardRefresh={hardRefresh} />
     </div>
   );
 };

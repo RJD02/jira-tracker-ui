@@ -1,0 +1,8 @@
+schema: "http://localhost:5002/" # Replace with your backend GraphQL endpoint
+documents: "src/api/grapqh.ts" # Path to your GraphQL queries/mutations
+generates:
+  src/__generated__/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
