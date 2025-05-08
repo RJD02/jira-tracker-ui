@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useProjects } from "@/hooks/project-hook";
-import Logout from "../login/Logout";
+import Logout from "../Login/Logout";
+import { useActiveProject } from "@/contexts/activeProject";
 
-interface HeaderProps {
-  activeProject: string | null;
-  onClick: (project: string) => void;
-}
-
-export function Header({
-  activeProject,
-  onClick: setActiveProject,
-}: HeaderProps) {
-  const { loading, projects } = useProjects();
+export function Header() {
+  const [projects, { loading }] = useProjects();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { activeProject, setActiveProject } = useActiveProject();
 
   useEffect(() => {
     if (!activeProject && !loading && projects && projects.length > 0) {
       setActiveProject(projects[0].label);
     }
-  }, [loading, projects]); // Add `projects` as a dependency
+  }, [loading]); // Add `projects` as a dependency
+  const sortedProjects = [...projects].sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
+  const links = sortedProjects;
 
-  const links = projects;
   if (loading) return <div>Loading...</div>;
 
   return (

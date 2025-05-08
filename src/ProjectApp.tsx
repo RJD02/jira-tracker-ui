@@ -1,26 +1,17 @@
-import { useQuery } from "@apollo/client";
-// import { Project } from "./__generated__/graphql";
-import { GET_JIRA_ITEMS } from "./api/grapqh";
 import { WorkItem } from "./components/workitem/WorkItem.type";
 import HomePage from "./Home";
 import { getParticipantActivity } from "./utils/activity-helper";
 import { isAfterLastNBusinessDays } from "./lib/utils";
 import { classifyWorkItem } from "./utils/activity-helper";
 import { Participant } from "./utils/Participant";
+import { useJiraDetails } from "./hooks/jira-hook";
+import { useActiveProject } from "./contexts/activeProject";
 
-export interface AppProps {
-  project: string;
-}
+export const ProjectApp: React.FC = () => {
+  const { activeProject } = useActiveProject();
+  const project = activeProject || "Star";
+  const [data, { loading, error }] = useJiraDetails(project);
 
-export const ProjectApp: React.FC<AppProps> = ({
-  project = "STAR",
-}: AppProps) => {
-  const response = useQuery(GET_JIRA_ITEMS, {
-    variables: { project: project},
-    fetchPolicy: "cache-and-network",
-  });
-  // console.log(response.variables)
-  const { data, loading, error } = response;
   const jiraDetails = data?.issues;
   const members = data?.members || [];
   const projects = data?.allProjects;

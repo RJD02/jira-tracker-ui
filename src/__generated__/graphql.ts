@@ -142,6 +142,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createProject2: Project2;
   createSiteUrl: SiteUrlTable;
+  deleteJiraUser?: Maybe<MutationResponse>;
+  deleteProject?: Maybe<MutationResponse>;
   jiraUserData: MutationResponse;
   login?: Maybe<AuthPayload>;
   signup?: Maybe<AuthPayload>;
@@ -154,6 +156,7 @@ export type MutationCreateProject2Args = {
   email: Scalars['String']['input'];
   id: Scalars['String']['input'];
   label: Scalars['String']['input'];
+  project_key: Scalars['String']['input'];
   site_id: Scalars['Int']['input'];
   token: Scalars['String']['input'];
 };
@@ -161,6 +164,16 @@ export type MutationCreateProject2Args = {
 
 export type MutationCreateSiteUrlArgs = {
   site_url: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteJiraUserArgs = {
+  jira_id: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteProjectArgs = {
+  label: Scalars['String']['input'];
 };
 
 
@@ -219,6 +232,7 @@ export type Project2 = {
   id: Scalars['String']['output'];
   jiraUsers: Array<JiraUser>;
   label: Scalars['String']['output'];
+  project_key: Scalars['String']['output'];
   site_id: Scalars['Int']['output'];
   token: Scalars['String']['output'];
 };
@@ -233,6 +247,7 @@ export type ProjectResponse = {
   __typename?: 'ProjectResponse';
   JiraUserResponse: Array<Maybe<JiraUserResponse>>;
   id: Scalars['ID']['output'];
+  key: Scalars['String']['output'];
   label: Scalars['String']['output'];
 };
 
@@ -258,6 +273,7 @@ export type QueryGetUsersArgs = {
 
 
 export type QueryIssuesArgs = {
+  forced?: InputMaybe<Scalars['Boolean']['input']>;
   project: Scalars['String']['input'];
 };
 
